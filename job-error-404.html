@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOB ERROR 404 — NFT Collection</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --neon-red: #ff0033;
+  --neon-red-dim: #8b0000;
+  --electric-blue: #00d4ff;
+  --blue-dim: #003d5c;
+  --black: #000000;
+  --dark-gray: #0a0a0a;
+  --mid-gray: #111111;
+  --panel-bg: #0d0d0d;
+  --text-dim: #4a4a4a;
+  --text-muted: #2a2a2a;
+  --green-term: #00ff41;
+  --amber: #ffb000;
+  --white: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* PIXEL ART RAIN CANVAS */
+#rain-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+/* SCANLINES OVERLAY */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.3) 2px,
+    rgba(0,0,0,0.3) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanMove 8s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  animation: noiseAnim 0.2s steps(2) infinite;
+}
+
+@keyframes noiseAnim {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(2px, -2px); }
+  75% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.9);
+  border-bottom: 1px solid var(--neon-red);
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  color: var(--neon-red);
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px var(--neon-red);
+  animation: logoFlicker 4s infinite;
+}
+
+@keyframes logoFlicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.3; }
+  97% { opacity: 1; }
+  98% { opacity: 0.1; }
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--electric-blue);
+  text-shadow: 0 0 8px var(--electric-blue);
+}
+
+.nav-cta {
+  background: transparent;
+  border: 1px solid var(--neon-red);
+  color: var(--neon-red) !important;
+  padding: 6px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: crosshair;
+  transition: all 0.2s;
+}
+
+.nav-cta:hover {
+  background: var(--neon-red) !important;
+  color: var(--black) !important;
+  box-shadow: 0 0 20px var(--neon-red);
+}
+
+/* ===== HERO ===== */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,0,51,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,0,51,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: gridDrift 20s linear infinite;
+}
+
+@keyframes gridDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(32px); }
+}
+
+.system-status {
+  font-size: 11px;
+  color: var(--neon-red);
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--neon-red);
+  border-radius: 50%;
+  animation: blink 1s steps(1) infinite;
+  box-shadow: 0 0 6px var(--neon-red);
+}
+
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+.hero-title {
+  font-family: 'VT323', monospace;
+  font-size: clamp(72px, 12vw, 160px);
+  line-height: 0.9;
+  letter-spacing: 8px;
+  color: var(--white);
+  text-shadow:
+    0 0 20px rgba(255,0,51,0.5),
+    4px 0 0 rgba(0,212,255,0.3),
+    -4px 0 0 rgba(255,0,51,0.3);
+  animation: titleGlitch 6s infinite;
+  position: relative;
+}
+
+.hero-title .error-num {
+  color: var(--neon-red);
+  text-shadow: 0 0 30px var(--neon-red), 0 0 60px rgba(255,0,51,0.3);
+}
+
+@keyframes titleGlitch {
+  0%, 90%, 100% {
+    text-shadow: 0 0 20px rgba(255,0,51,0.5), 4px 0 0 rgba(0,212,255,0.3), -4px 0 0 rgba(255,0,51,0.3);
+    transform: translate(0);
+  }
+  91% { transform: translate(-4px, 2px); text-shadow: 6px 0 0 rgba(0,212,255,0.8), -6px 0 0 rgba(255,0,51,0.8); }
+  92% { transform: translate(4px, -2px); }
+  93% { transform: translate(0); }
+  95% { transform: translate(2px, 0); text-shadow: -4px 0 0 var(--electric-blue); }
+  96% { transform: translate(0); }
+}
+
+.hero-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(13px, 2vw, 18px);
+  color: var(--electric-blue);
+  letter-spacing: 3px;
+  margin: 20px 0 10px;
+  text-shadow: 0 0 10px rgba(0,212,255,0.4);
+  max-width: 700px;
+  animation: fadeInUp 1.2s ease both;
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(20px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.hero-tag {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-bottom: 48px;
+  animation: fadeInUp 1.2s ease both;
+  animation-delay: 0.7s;
+}
+
+.hero-cta {
+  display: inline-block;
+  background: var(--neon-red);
+  color: var(--black);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  text-decoration: none;
+  border: none;
+  cursor: crosshair;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+  animation: fadeInUp 1.2s ease both;
+  animation-delay: 1s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.hero-cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.4s;
+}
+
+.hero-cta:hover::before { left: 100%; }
+
+.hero-cta:hover {
+  box-shadow: 0 0 30px var(--neon-red), 0 0 60px rgba(255,0,51,0.3);
+  letter-spacing: 6px;
+}
+
+.hero-secondary {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-top: 20px;
+  animation: fadeInUp 1.2s ease both;
+  animation-delay: 1.2s;
+}
+
+.corrupt-bar {
+  width: 600px;
+  max-width: 90vw;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.corrupt-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%;
+  height: 100%;
+  background: var(--electric-blue);
+  animation: barSlide 3s linear infinite;
+}
+
+@keyframes barSlide { to { left: 200%; } }
+
+/* ===== TERMINAL LORE ===== */
+#lore {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.section-tag {
+  font-size: 10px;
+  color: var(--neon-red);
+  letter-spacing: 4px;
+  border: 1px solid var(--neon-red-dim);
+  padding: 4px 12px;
+}
+
+.section-title {
+  font-family: 'VT323', monospace;
+  font-size: 48px;
+  color: var(--white);
+  letter-spacing: 4px;
+}
+
+.terminal-window {
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  border-top: 1px solid var(--neon-red-dim);
+  position: relative;
+}
+
+.terminal-titlebar {
+  background: #0d0d0d;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.terminal-dot { width:8px; height:8px; border-radius:50%; }
+.t-red { background: var(--neon-red); box-shadow: 0 0 4px var(--neon-red); }
+.t-amber { background: var(--amber); }
+.t-green { background: #333; }
+
+.terminal-body {
+  padding: 32px;
+  font-size: 13px;
+  line-height: 2;
+  color: #888;
+}
+
+.t-line { display: block; margin-bottom: 4px; }
+.t-prompt { color: var(--neon-red); }
+.t-output { color: #666; padding-left: 20px; }
+.t-blue { color: var(--electric-blue); }
+.t-red-text { color: var(--neon-red); }
+.t-white { color: var(--white); }
+.t-green { color: var(--green-term); }
+.t-amber { color: var(--amber); }
+.t-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--green-term);
+  vertical-align: middle;
+  animation: blink 1s steps(1) infinite;
+  margin-left: 4px;
+}
+
+.lore-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+/* ===== CHARACTERS ===== */
+#characters {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent, rgba(255,0,51,0.02), transparent);
+}
+
+#characters .inner { max-width: 1200px; margin: 0 auto; }
+
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 48px;
+}
+
+.char-card {
+  background: var(--panel-bg);
+  border: 1px solid #1a1a1a;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: crosshair;
+}
+
+.char-card:hover {
+  border-color: var(--neon-red);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--neon-red-dim), 0 0 20px rgba(255,0,51,0.15);
+}
+
+.char-card:hover .char-pixel-art {
+  animation: glitchArt 0.3s steps(1) infinite;
+}
+
+@keyframes glitchArt {
+  0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-4px, 2px); }
+  40% { clip-path: inset(60% 0 10% 0); transform: translate(4px, -2px); }
+  60% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 0); }
+  80% { clip-path: inset(10% 0 80% 0); transform: translate(2px, 2px); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+.char-header {
+  background: #050505;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.char-pixel-art {
+  display: block;
+  width: 100%;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.char-info {
+  padding: 20px;
+}
+
+.char-name {
+  font-family: 'VT323', monospace;
+  font-size: 28px;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.char-role {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon-red);
+  margin-bottom: 12px;
+}
+
+.char-desc {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.8;
+}
+
+.char-stats {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.stat-label { width: 80px; letter-spacing: 1px; }
+
+.stat-bar {
+  flex: 1;
+  height: 4px;
+  background: #111;
+  position: relative;
+}
+
+.stat-fill {
+  height: 100%;
+  background: var(--neon-red);
+  position: relative;
+}
+
+.stat-fill.blue { background: var(--electric-blue); }
+.stat-fill.amber { background: var(--amber); }
+.stat-fill.green { background: var(--green-term); }
+
+/* ===== NFT CARDS ===== */
+#nft {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+}
+
+#nft .inner { max-width: 1200px; margin: 0 auto; }
+
+.nft-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.nft-card {
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: crosshair;
+}
+
+.nft-card:hover {
+  border-color: var(--electric-blue);
+  box-shadow: 0 0 30px rgba(0,212,255,0.1), inset 0 0 30px rgba(0,212,255,0.03);
+}
+
+.nft-card:hover .nft-img-wrap { transform: scale(1.02); }
+
+.nft-rarity {
+  position: absolute;
+  top: 10px; right: 10px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  z-index: 2;
+}
+
+.rarity-legendary { background: rgba(255,176,0,0.2); color: var(--amber); border: 1px solid var(--amber); }
+.rarity-rare { background: rgba(0,212,255,0.1); color: var(--electric-blue); border: 1px solid var(--electric-blue); }
+.rarity-uncommon { background: rgba(0,255,65,0.1); color: var(--green-term); border: 1px solid var(--green-term); }
+.rarity-common { background: rgba(255,0,51,0.1); color: var(--neon-red); border: 1px solid var(--neon-red-dim); }
+
+.nft-img-wrap {
+  height: 200px;
+  overflow: hidden;
+  transition: transform 0.4s;
+  position: relative;
+  background: #080808;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nft-pixel {
+  image-rendering: pixelated;
+  width: 160px; height: 160px;
+}
+
+.nft-data {
+  padding: 16px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.nft-id {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.nft-name {
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.nft-attrs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.nft-attr {
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  background: #0d0d0d;
+  border: 1px solid #222;
+  color: #555;
+}
+
+.nft-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #111;
+}
+
+.price-label { font-size: 10px; color: #333; }
+.price-val { font-size: 14px; color: var(--electric-blue); }
+
+/* ===== ROADMAP ===== */
+#roadmap {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+  background: rgba(255,0,51,0.01);
+}
+
+#roadmap .inner { max-width: 1200px; margin: 0 auto; }
+
+.os-window {
+  background: #060606;
+  border: 1px solid #1a1a1a;
+  margin-top: 48px;
+}
+
+.os-menubar {
+  background: #0d0d0d;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 6px 16px;
+  display: flex;
+  gap: 20px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.os-menu-item { cursor: default; }
+.os-menu-item:first-child { color: var(--neon-red); }
+
+.os-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 400px;
+}
+
+.os-sidebar {
+  border-right: 1px solid #111;
+  padding: 16px 0;
+}
+
+.os-tree-item {
+  padding: 8px 20px;
+  font-size: 11px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.os-tree-item:hover, .os-tree-item.active {
+  background: rgba(255,0,51,0.07);
+  color: var(--white);
+}
+
+.os-tree-item.active { border-left: 2px solid var(--neon-red); color: var(--neon-red); }
+
+.os-content {
+  padding: 32px;
+}
+
+.phase-item {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #0d0d0d;
+  animation: phaseIn 0.5s ease both;
+}
+
+.phase-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+@keyframes phaseIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.phase-num {
+  font-family: 'VT323', monospace;
+  font-size: 56px;
+  color: #1a1a1a;
+  line-height: 1;
+  min-width: 60px;
+}
+
+.phase-item.active .phase-num { color: var(--neon-red); text-shadow: 0 0 20px rgba(255,0,51,0.4); }
+.phase-item.done .phase-num { color: var(--green-term); }
+
+.phase-details {}
+
+.phase-title {
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.phase-status {
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.status-done { color: var(--green-term); }
+.status-active { color: var(--neon-red); animation: blink 1s steps(1) infinite; }
+.status-pending { color: #333; }
+
+.phase-tasks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.phase-tasks li {
+  font-size: 11px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phase-tasks li::before {
+  content: '';
+  width: 6px; height: 6px;
+  border: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.phase-tasks li.done { color: #444; }
+.phase-tasks li.done::before { background: var(--green-term); border-color: var(--green-term); }
+.phase-tasks li.active::before { background: var(--neon-red); border-color: var(--neon-red); }
+
+/* ===== WHITELIST FORM ===== */
+#whitelist {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+}
+
+#whitelist .inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-window {
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  border-top: 1px solid var(--neon-red-dim);
+}
+
+.form-titlebar {
+  background: #0a0a0a;
+  border-bottom: 1px solid #111;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.form-body { padding: 40px; }
+
+.form-group { margin-bottom: 24px; }
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-label span { color: var(--neon-red); }
+
+.form-input {
+  width: 100%;
+  background: #080808;
+  border: 1px solid #1a1a1a;
+  border-bottom: 1px solid var(--neon-red-dim);
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  padding: 12px 16px;
+  outline: none;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.form-input:focus {
+  border-color: var(--electric-blue);
+  box-shadow: 0 0 10px rgba(0,212,255,0.1);
+  background: #0a0a0a;
+}
+
+.form-input::placeholder { color: #2a2a2a; }
+
+.form-select {
+  width: 100%;
+  background: #080808;
+  border: 1px solid #1a1a1a;
+  border-bottom: 1px solid var(--neon-red-dim);
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  padding: 12px 16px;
+  outline: none;
+  cursor: crosshair;
+  appearance: none;
+}
+
+.form-submit {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--neon-red);
+  color: var(--neon-red);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 16px;
+  cursor: crosshair;
+  transition: all 0.2s;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.form-submit:hover {
+  background: var(--neon-red);
+  color: var(--black);
+  box-shadow: 0 0 30px rgba(255,0,51,0.4);
+}
+
+.form-note {
+  font-size: 10px;
+  color: #2a2a2a;
+  text-align: center;
+  margin-top: 20px;
+  letter-spacing: 1px;
+  line-height: 2;
+}
+
+/* ===== COMMUNITY ===== */
+#community {
+  position: relative;
+  z-index: 1;
+  padding: 100px 40px;
+  text-align: center;
+  border-top: 1px solid #0d0d0d;
+}
+
+#community .inner { max-width: 800px; margin: 0 auto; }
+
+.community-title {
+  font-family: 'VT323', monospace;
+  font-size: 64px;
+  color: var(--white);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+}
+
+.community-sub {
+  font-size: 12px;
+  color: #444;
+  letter-spacing: 2px;
+  margin-bottom: 48px;
+}
+
+.social-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #080808;
+  border: 1px solid #1a1a1a;
+  color: #555;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 14px 28px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: crosshair;
+}
+
+.social-btn:hover {
+  border-color: var(--electric-blue);
+  color: var(--electric-blue);
+  box-shadow: 0 0 20px rgba(0,212,255,0.1);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px; height: 20px;
+  fill: currentColor;
+}
+
+.stat-counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-bottom: 48px;
+}
+
+.stat-counter {
+  background: #080808;
+  border: 1px solid #111;
+  padding: 28px;
+}
+
+.counter-val {
+  font-family: 'VT323', monospace;
+  font-size: 48px;
+  color: var(--neon-red);
+  text-shadow: 0 0 20px rgba(255,0,51,0.4);
+  display: block;
+}
+
+.counter-label {
+  font-size: 10px;
+  color: #333;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* FOOTER */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid #111;
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: #222;
+  letter-spacing: 2px;
+}
+
+footer span { color: var(--neon-red); }
+
+/* GLITCH TEXT EFFECT */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.glitch-text::before {
+  color: var(--electric-blue);
+  animation: glitchBefore 4s infinite;
+  clip-path: inset(40% 0 60% 0);
+}
+
+.glitch-text::after {
+  color: var(--neon-red);
+  animation: glitchAfter 4s infinite;
+  clip-path: inset(60% 0 20% 0);
+}
+
+@keyframes glitchBefore {
+  0%, 92%, 100% { transform: translate(0); opacity: 0; }
+  93% { transform: translate(-4px, 2px); opacity: 1; }
+  94% { transform: translate(4px, -2px); opacity: 0.8; }
+  95% { transform: translate(0); opacity: 0; }
+}
+
+@keyframes glitchAfter {
+  0%, 94%, 100% { transform: translate(0); opacity: 0; }
+  95% { transform: translate(4px, 1px); opacity: 1; }
+  96% { transform: translate(-4px, -1px); opacity: 0.8; }
+  97% { transform: translate(0); opacity: 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: var(--neon-red-dim); }
+
+</style>
+</head>
+<body>
+
+<canvas id="rain-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JE//404</div>
+  <ul class="nav-links">
+    <li><a href="#lore">LORE</a></li>
+    <li><a href="#characters">ARCHETYPES</a></li>
+    <li><a href="#nft">NFTs</a></li>
+    <li><a href="#roadmap">ROADMAP</a></li>
+    <li><a href="#whitelist" class="nav-cta">JOIN WHITELIST</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+
+  <div class="system-status">
+    <span class="status-dot"></span>
+    SYSTEM ONLINE — CAREERS.EXE: CORRUPTED — REALITY.SYS: MISSING
+  </div>
+
+  <h1 class="hero-title">
+    JOB<br>
+    <span class="error-num glitch-text" data-text="ERROR 404">ERROR 404</span>
+  </h1>
+
+  <p class="hero-subtitle">Profiles became identities. Reputation became currency.</p>
+  <p class="hero-tag">// Survive the corrupted career system.</p>
+
+  <div class="corrupt-bar"></div>
+
+  <a href="#whitelist" class="hero-cta">JOIN THE WHITELIST</a>
+  <p class="hero-secondary">5,404 unique corrupted identities. Minting soon.</p>
+</section>
+
+<!-- LORE -->
+<section id="lore">
+  <div class="section-header">
+    <div class="section-tag">// 01_LORE</div>
+    <h2 class="section-title">THE CORRUPTED WORLD</h2>
+  </div>
+
+  <div class="terminal-window">
+    <div class="terminal-titlebar">
+      <span class="terminal-dot t-red"></span>
+      <span class="terminal-dot t-amber"></span>
+      <span class="terminal-dot t-green"></span>
+      <span style="margin-left:12px;">ARCHIVE://world_history.log — READ_ONLY</span>
+    </div>
+    <div class="terminal-body">
+      <span class="t-line"><span class="t-prompt">$ </span><span class="t-blue">cat world_history.log</span></span>
+      <span class="t-line t-output" style="color:#333;">—————————————————————————————————————————————————————</span>
+      <span class="t-line t-output"><span class="t-red-text">[ERROR]</span> <span class="t-white">In the year 2047, the Great Automation swept through every sector.</span></span>
+      <span class="t-line t-output">Corporations merged into a singular GRID — a sentient hiring protocol</span>
+      <span class="t-line t-output">that controlled access to all employment, housing, and survival.</span>
+      <br>
+      <span class="t-line t-output"><span class="t-amber">[WARNING]</span> Your resume is no longer a document. It is your identity hash.</span>
+      <span class="t-line t-output">Your LinkedIn profile was absorbed into the GRID at birth. Followers</span>
+      <span class="t-line t-output">became your credit score. Endorsements became your oxygen supply.</span>
+      <br>
+      <span class="t-line t-output"><span class="t-red-text">[CRITICAL]</span> Recruiters became silent oracles — algorithmic entities that</span>
+      <span class="t-line t-output">ghost 99.7% of all applications. They are not human. They were never human.</span>
+      <br>
+      <span class="t-line t-output"><span class="t-green">[INFO]</span> The Outcasts emerged. Those whose profiles were flagged, corrupted,</span>
+      <span class="t-line t-output">or deleted. They live in the Dead Zones — server rooms the GRID abandoned.</span>
+      <span class="t-line t-output">They built something new. Something uncorruptible.</span>
+      <br>
+      <span class="t-line t-output" style="color:#333;">—————————————————————————————————————————————————————</span>
+      <span class="t-line"><span class="t-prompt">$ </span><span class="t-red-text">STATUS: 404 careers not found in the system.</span><span class="t-cursor"></span></span>
+    </div>
+  </div>
+
+  <div class="lore-columns" style="margin-top:2px;">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dot t-red"></span>
+        <span style="margin-left:12px;">PROTOCOL://the_grid.sys</span>
+      </div>
+      <div class="terminal-body" style="font-size:12px;">
+        <span class="t-line"><span class="t-amber">THE GRID</span></span>
+        <span class="t-line t-output">A self-learning corporate AI that replaced all HR departments in 2041.</span>
+        <br>
+        <span class="t-line t-output">It evaluates identity tokens, not humans. It rewards engagement metrics, buzzwords, and profile completeness.</span>
+        <br>
+        <span class="t-line t-output" style="color:#333">UPTIME: 99.9% // EMPATHY: NULL // SOUL: 404</span>
+      </div>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dot t-red"></span>
+        <span style="margin-left:12px;">PROTOCOL://dead_zones.sys</span>
+      </div>
+      <div class="terminal-body" style="font-size:12px;">
+        <span class="t-line"><span class="t-electric" style="color:var(--electric-blue)">THE DEAD ZONES</span></span>
+        <span class="t-line t-output">Underground networks built in abandoned data centers. The Outcasts trade in corrupted NFT identities — proof of existence outside the GRID.</span>
+        <br>
+        <span class="t-line t-output" style="color:#333">POPULATION: UNKNOWN // HOPE: ENCRYPTED // REBELLION: ACTIVE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-tag">// 02_ARCHETYPES</div>
+      <h2 class="section-title">IDENTITY CLASSES</h2>
+    </div>
+
+    <div class="char-grid">
+
+      <!-- APPLICANT -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_001</span><span style="color:var(--neon-red)">■■□□□</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-0" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE APPLICANT</div>
+          <div class="char-role">// INFINITE_LOOP.EXE</div>
+          <div class="char-desc">Trapped in an endless cycle of applications. Sends 200 resumes a day. Has received 0 responses this year. Still optimizing their keyword density.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">DESPAIR</span><div class="stat-bar"><div class="stat-fill" style="width:85%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">HOPE</span><div class="stat-bar"><div class="stat-fill blue" style="width:12%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">CAFFEINE</span><div class="stat-bar"><div class="stat-fill amber" style="width:96%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECRUITER -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_002</span><span style="color:var(--electric-blue)">■■■□□</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-1" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE RECRUITER</div>
+          <div class="char-role">// GHOST_PROTOCOL.SYS</div>
+          <div class="char-desc">May or may not be human. Opens messages but never replies. Reacts with 🎉 to your LinkedIn post then rejects you 40 minutes later.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">GHOSTING</span><div class="stat-bar"><div class="stat-fill" style="width:100%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">EMPATHY</span><div class="stat-bar"><div class="stat-fill blue" style="width:3%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">BUZZWORDS</span><div class="stat-bar"><div class="stat-fill amber" style="width:92%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOUNDER -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_003</span><span style="color:var(--amber)">■■■■□</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-2" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE FOUNDER</div>
+          <div class="char-role">// DISRUPTION.EXE</div>
+          <div class="char-desc">Posts daily about "building in public" while underpaying their team. Claims to be changing the world via their B2B SaaS analytics platform.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">EGO</span><div class="stat-bar"><div class="stat-fill" style="width:99%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">RUNWAY</span><div class="stat-bar"><div class="stat-fill blue" style="width:8%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">HUSTLE</span><div class="stat-bar"><div class="stat-fill amber" style="width:88%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKER -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_004</span><span style="color:var(--green-term)">■■□□□</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-3" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE WORKER</div>
+          <div class="char-role">// WAGE_SLAVE.DAT</div>
+          <div class="char-desc">Does the work of 3 people since the layoffs. Their manager takes credit in the all-hands. Considered "quiet quitting" for 2 years. Still here.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">BURNOUT</span><div class="stat-bar"><div class="stat-fill" style="width:78%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">LOYALTY</span><div class="stat-bar"><div class="stat-fill blue" style="width:45%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">SALARY</span><div class="stat-bar"><div class="stat-fill green" style="width:22%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_005</span><span style="color:var(--neon-red)">■■■■■</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-4" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE EXECUTIVE</div>
+          <div class="char-role">// PARASITE_PRIME.EXE</div>
+          <div class="char-desc">Lays off 30% of staff to "optimize efficiency," takes a $4M bonus, then posts about "difficult decisions" and resilience on LinkedIn.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">WEALTH</span><div class="stat-bar"><div class="stat-fill amber" style="width:97%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">EMPATHY</span><div class="stat-bar"><div class="stat-fill blue" style="width:1%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">IMPUNITY</span><div class="stat-bar"><div class="stat-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTCAST -->
+      <div class="char-card">
+        <div class="char-header">
+          <span>CLASS_006</span><span style="color:var(--green-term)">■■■■■</span>
+        </div>
+        <div class="char-pixel-art">
+          <canvas class="pixel-canvas" id="char-5" width="64" height="48"></canvas>
+        </div>
+        <div class="char-info">
+          <div class="char-name">THE OUTCAST</div>
+          <div class="char-role">// FREEDOM_PROTOCOL.EXE</div>
+          <div class="char-desc">Profile deleted. Identity corrupted. Lives in the Dead Zones. The only archetype that truly escaped the GRID. Rarest of all. Most dangerous.</div>
+          <div class="char-stats">
+            <div class="stat-row"><span class="stat-label">FREEDOM</span><div class="stat-bar"><div class="stat-fill green" style="width:100%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">VISIBILITY</span><div class="stat-bar"><div class="stat-fill blue" style="width:5%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">RARITY</span><div class="stat-bar"><div class="stat-fill" style="width:99%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NFT SNEAK PEEKS -->
+<section id="nft">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-tag">// 03_COLLECTION</div>
+      <h2 class="section-title">NFT SNEAK PEEK</h2>
+    </div>
+
+    <div class="nft-grid">
+
+      <div class="nft-card">
+        <span class="nft-rarity rarity-legendary">LEGENDARY</span>
+        <div class="nft-img-wrap">
+          <canvas id="nft-0" class="nft-pixel" width="32" height="32"></canvas>
+        </div>
+        <div class="nft-data">
+          <div class="nft-id">#0001</div>
+          <div class="nft-name">GHOST RECRUITER Ω</div>
+          <div class="nft-attrs">
+            <span class="nft-attr">SILENT</span>
+            <span class="nft-attr">CORRUPTED</span>
+            <span class="nft-attr">ORACLE</span>
+          </div>
+          <div class="nft-price">
+            <span class="price-label">FLOOR PRICE</span>
+            <span class="price-val">? ETH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nft-card">
+        <span class="nft-rarity rarity-rare">RARE</span>
+        <div class="nft-img-wrap">
+          <canvas id="nft-1" class="nft-pixel" width="32" height="32"></canvas>
+        </div>
+        <div class="nft-data">
+          <div class="nft-id">#0042</div>
+          <div class="nft-name">NULL APPLICANT X</div>
+          <div class="nft-attrs">
+            <span class="nft-attr">LOOPING</span>
+            <span class="nft-attr">CAFFEINATED</span>
+          </div>
+          <div class="nft-price">
+            <span class="price-label">FLOOR PRICE</span>
+            <span class="price-val">? ETH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nft-card">
+        <span class="nft-rarity rarity-uncommon">UNCOMMON</span>
+        <div class="nft-img-wrap">
+          <canvas id="nft-2" class="nft-pixel" width="32" height="32"></canvas>
+        </div>
+        <div class="nft-data">
+          <div class="nft-id">#0128</div>
+          <div class="nft-name">BURNOUT WORKER v3</div>
+          <div class="nft-attrs">
+            <span class="nft-attr">EXHAUSTED</span>
+            <span class="nft-attr">LOYAL</span>
+          </div>
+          <div class="nft-price">
+            <span class="price-label">FLOOR PRICE</span>
+            <span class="price-val">? ETH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nft-card">
+        <span class="nft-rarity rarity-common">OUTCAST</span>
+        <div class="nft-img-wrap">
+          <canvas id="nft-3" class="nft-pixel" width="32" height="32"></canvas>
+        </div>
+        <div class="nft-data">
+          <div class="nft-id">#0404</div>
+          <div class="nft-name">THE FREE ONE</div>
+          <div class="nft-attrs">
+            <span class="nft-attr">DELETED</span>
+            <span class="nft-attr">ALIVE</span>
+            <span class="nft-attr">FREE</span>
+          </div>
+          <div class="nft-price">
+            <span class="price-label">FLOOR PRICE</span>
+            <span class="price-val">PRICELESS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:32px; font-size:11px; color:#333; letter-spacing:2px;">
+      TOTAL SUPPLY: 5,404 &nbsp;|&nbsp; BLOCKCHAIN: ETHEREUM &nbsp;|&nbsp; MINT DATE: CLASSIFIED &nbsp;|&nbsp; ROYALTIES: 7.5%
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-tag">// 04_ROADMAP</div>
+      <h2 class="section-title">SYSTEM CHANGELOG</h2>
+    </div>
+
+    <div class="os-window">
+      <div class="os-menubar">
+        <span class="os-menu-item">CAREER_OS v2047.exe</span>
+        <span class="os-menu-item">File</span>
+        <span class="os-menu-item">Edit</span>
+        <span class="os-menu-item">View</span>
+        <span class="os-menu-item">Deploy</span>
+        <span class="os-menu-item" style="margin-left:auto; color:var(--neon-red)">● RUNNING</span>
+      </div>
+      <div class="os-body">
+        <div class="os-sidebar">
+          <div class="os-tree-item done">📁 PHASE_01/</div>
+          <div class="os-tree-item done">📁 PHASE_02/</div>
+          <div class="os-tree-item active">📁 PHASE_03/ ←</div>
+          <div class="os-tree-item">📁 PHASE_04/</div>
+          <div class="os-tree-item">📁 PHASE_05/</div>
+          <div class="os-tree-item" style="color:#111; margin-top:32px; font-size:10px; padding-left:20px;">// MORE FILES ENCRYPTED</div>
+        </div>
+        <div class="os-content">
+
+          <div class="phase-item done">
+            <div class="phase-num">01</div>
+            <div class="phase-details">
+              <div class="phase-title">WORLD_BUILDING.exe</div>
+              <div class="phase-status status-done">● COMPLETE</div>
+              <ul class="phase-tasks">
+                <li class="done">Lore development & universe design</li>
+                <li class="done">Character archetype creation</li>
+                <li class="done">Art style guide & pixel palette</li>
+                <li class="done">Smart contract architecture</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="phase-item done">
+            <div class="phase-num">02</div>
+            <div class="phase-details">
+              <div class="phase-title">PROFILE_GENERATION.sys</div>
+              <div class="phase-status status-done">● COMPLETE</div>
+              <ul class="phase-tasks">
+                <li class="done">5,404 unique NFT art generation</li>
+                <li class="done">Rarity trait system implementation</li>
+                <li class="done">IPFS metadata upload</li>
+                <li class="done">Community channel launch</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="phase-item active">
+            <div class="phase-num">03</div>
+            <div class="phase-details">
+              <div class="phase-title">WHITELIST_PROTOCOL.exe</div>
+              <div class="phase-status status-active">● EXECUTING NOW</div>
+              <ul class="phase-tasks">
+                <li class="active">Whitelist applications open</li>
+                <li class="active">Community challenges & OG roles</li>
+                <li>Audit & security review</li>
+                <li>Pre-mint reveal</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-num">04</div>
+            <div class="phase-details">
+              <div class="phase-title">MINT_DAY.exe</div>
+              <div class="phase-status status-pending">○ PENDING</div>
+              <ul class="phase-tasks">
+                <li>Public mint launch</li>
+                <li>OpenSea & Blur listing</li>
+                <li>Holder verification system</li>
+                <li>DAO governance token airdrop</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-num">05</div>
+            <div class="phase-details">
+              <div class="phase-title">DEAD_ZONE_ACCESS.sys</div>
+              <div class="phase-status status-pending">○ CLASSIFIED</div>
+              <ul class="phase-tasks">
+                <li>Holders-only metaverse Dead Zone</li>
+                <li>Animated NFT evolution system</li>
+                <li>Anti-corporate merch drop</li>
+                <li>[REDACTED]</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHITELIST FORM -->
+<section id="whitelist">
+  <div class="inner">
+    <div class="section-header" style="justify-content:center;">
+      <div class="section-tag">// 05_ACCESS</div>
+      <h2 class="section-title">JOIN THE WHITELIST</h2>
+    </div>
+    <p style="text-align:center; font-size:11px; color:#444; letter-spacing:2px; margin-bottom:40px; margin-top:-20px;">Survive the corrupted career system. Claim your corrupted identity.</p>
+
+    <div class="form-window">
+      <div class="form-titlebar">
+        <span>WHITELIST_APPLICATION.exe</span>
+        <span style="color:var(--neon-red)">FORM_OPEN</span>
+      </div>
+      <div class="form-body">
+
+        <div class="form-group">
+          <label class="form-label">TWITTER / X HANDLE <span>*</span></label>
+          <input type="text" class="form-input" placeholder="@your_corrupted_handle">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">DISCORD USERNAME <span>*</span></label>
+          <input type="text" class="form-input" placeholder="username#0000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">WALLET ADDRESS <span>*</span></label>
+          <input type="text" class="form-input" placeholder="0x...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">YOUR ARCHETYPE</label>
+          <select class="form-select">
+            <option value="">// SELECT YOUR IDENTITY CLASS</option>
+            <option>THE APPLICANT — Infinite Loop</option>
+            <option>THE RECRUITER — Ghost Protocol</option>
+            <option>THE FOUNDER — Disruption.exe</option>
+            <option>THE WORKER — Wage Slave</option>
+            <option>THE EXECUTIVE — Parasite Prime</option>
+            <option>THE OUTCAST — Freedom Protocol</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">YOUR MOST DYSTOPIAN CAREER EXPERIENCE</label>
+          <input type="text" class="form-input" placeholder="Tell us how the GRID broke you...">
+        </div>
+
+        <button class="form-submit" onclick="handleSubmit(this)">
+          SUBMIT APPLICATION TO THE GRID
+        </button>
+
+        <div class="form-note">
+          BY SUBMITTING YOU ACKNOWLEDGE THAT YOUR IDENTITY HAS BEEN HASHED<br>
+          AND UPLOADED TO AN IMMUTABLE BLOCKCHAIN. THERE IS NO ESCAPE.<br>
+          <span style="color:var(--neon-red)">// WL SPOTS: 2,000 / APPLICATIONS: 47,291</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="inner">
+    <div class="section-header" style="justify-content:center;">
+      <div class="section-tag">// 06_NETWORK</div>
+      <h2 class="section-title">THE DEAD ZONE NETWORK</h2>
+    </div>
+
+    <div class="stat-counters" style="margin-top:40px;">
+      <div class="stat-counter">
+        <span class="counter-val" id="cnt-holders">8,291</span>
+        <span class="counter-label">Dead Zone Members</span>
+      </div>
+      <div class="stat-counter">
+        <span class="counter-val" id="cnt-apps">47,291</span>
+        <span class="counter-label">WL Applications</span>
+      </div>
+      <div class="stat-counter">
+        <span class="counter-val" id="cnt-supply">5,404</span>
+        <span class="counter-label">Total Supply</span>
+      </div>
+    </div>
+
+    <div class="social-grid">
+      <a href="#" class="social-btn">
+        <svg class="social-icon" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.259 5.627L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        TWITTER / X
+      </a>
+      <a href="#" class="social-btn">
+        <svg class="social-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.042.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        DISCORD
+      </a>
+      <a href="#" class="social-btn">
+        <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 7.5h-2c-.276 0-.5.224-.5.5v1.5h2.5l-.375 2.5H14V19h-2.5v-5.5H10v-2.5h1.5V10c0-1.657 1.343-3 3-3h2v3z"/></svg>
+        OPENSEA
+      </a>
+      <a href="#" class="social-btn">
+        <svg class="social-icon" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.504-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        TELEGRAM
+      </a>
+    </div>
+
+    <div style="font-size:10px; color:#222; letter-spacing:2px; margin-top:16px;">
+      THE GRID WATCHES. BUT HERE, WE ARE ANONYMOUS. JOIN THE DEAD ZONE.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2047 JOB ERROR 404 — <span>ALL CAREERS CORRUPTED</span></div>
+  <div>BUILT IN THE DEAD ZONE — <span>NOT AFFILIATED WITH THE GRID</span></div>
+  <div>CONTRACT: <span>0x404...ERROR</span></div>
+</footer>
+
+<script>
+// ===== PIXEL RAIN =====
+const rainCanvas = document.getElementById('rain-canvas');
+const rctx = rainCanvas.getContext('2d');
+let rainCols = [];
+
+function initRain() {
+  rainCanvas.width = window.innerWidth;
+  rainCanvas.height = window.innerHeight;
+  const cols = Math.floor(rainCanvas.width / 14);
+  rainCols = Array.from({length: cols}, () => Math.random() * -50);
+}
+
+const CHARS = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ!@#$%<>?/\\|{}[]ERROR404NULLVOID';
+
+function drawRain() {
+  rctx.fillStyle = 'rgba(0,0,0,0.07)';
+  rctx.fillRect(0, 0, rainCanvas.width, rainCanvas.height);
+
+  rainCols.forEach((y, i) => {
+    const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+    const x = i * 14;
+
+    // Alternate between red and blue drops
+    if (i % 5 === 0) {
+      rctx.fillStyle = '#ff0033';
+      rctx.shadowBlur = 4;
+      rctx.shadowColor = '#ff0033';
+    } else {
+      rctx.fillStyle = '#00d4ff';
+      rctx.shadowBlur = 2;
+      rctx.shadowColor = '#00d4ff';
+    }
+
+    rctx.font = '12px "Share Tech Mono", monospace';
+    rctx.fillText(char, x, y * 14);
+
+    if (y * 14 > rainCanvas.height && Math.random() > 0.975) {
+      rainCols[i] = 0;
+    }
+    rainCols[i] += 0.5;
+  });
+  rctx.shadowBlur = 0;
+}
+
+initRain();
+setInterval(drawRain, 50);
+window.addEventListener('resize', initRain);
+
+// ===== PIXEL ART CHARACTERS =====
+function drawPixelChar(canvasId, colorScheme) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = '#080808';
+  ctx.fillRect(0,0,W,H);
+
+  const {skin, hair, suit, accent, eye} = colorScheme;
+  const S = W/64; // scale factor
+
+  // Simple pixel humanoid
+  const px = (x,y,w,h,c) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(x*S, y*S, w*S, h*S);
+  };
+
+  // Shadow/ground
+  px(20,44,24,2,'#0d0d0d');
+
+  // Body / suit
+  px(18,22,28,20,suit);
+  // Suit detail
+  px(22,24,4,12,accent);
+  px(38,24,4,12,accent);
+  // Collar
+  px(26,22,12,3,'#1a1a1a');
+
+  // Head
+  px(22,10,20,14,skin);
+
+  // Hair
+  px(22,8,20,5,hair);
+
+  // Eyes
+  px(26,16,4,3,eye);
+  px(34,16,4,3,eye);
+
+  // Eye glow
+  ctx.fillStyle = eye;
+  ctx.shadowBlur = 6;
+  ctx.shadowColor = eye;
+  px(27,17,2,1,eye);
+  px(35,17,2,1,eye);
+  ctx.shadowBlur = 0;
+
+  // Glitch effect strips
+  if (Math.random() > 0.6) {
+    ctx.fillStyle = colorScheme.accent + '44';
+    const gy = Math.floor(Math.random() * H);
+    ctx.fillRect(0, gy, W, 2);
+  }
+
+  // Legs
+  px(22,42,10,6,suit);
+  px(34,42,10,6,suit);
+
+  // Shoes
+  px(20,47,12,3,'#111');
+  px(32,47,12,3,'#111');
+
+  // Arms
+  px(10,22,10,18,suit);
+  px(44,22,10,18,suit);
+
+  // Hands
+  px(10,40,10,4,skin);
+  px(44,40,10,4,skin);
+}
+
+const charSchemes = [
+  {skin:'#8B6B4B', hair:'#3a1a1a', suit:'#1a1a2e', accent:'#ff0033', eye:'#ff0033'}, // Applicant - dark suit, red eyes
+  {skin:'#c4a882', hair:'#000', suit:'#0d1117', accent:'#00d4ff', eye:'#00d4ff'}, // Recruiter - blue eyes
+  {skin:'#d4a96a', hair:'#8B4513', suit:'#2a1a0a', accent:'#ffb000', eye:'#ffb000'}, // Founder - gold
+  {skin:'#7a9a7a', hair:'#333', suit:'#111a11', accent:'#00ff41', eye:'#00ff41'}, // Worker - green
+  {skin:'#c0a0a0', hair:'#111', suit:'#1a0000', accent:'#ff0033', eye:'#ff3300'}, // Exec - dark red
+  {skin:'#4a8a8a', hair:'#006644', suit:'#001a1a', accent:'#00ffaa', eye:'#00ffaa'}, // Outcast - cyan
+];
+
+charSchemes.forEach((scheme, i) => {
+  drawPixelChar('char-' + i, scheme);
+  // Animate glitch
+  setInterval(() => drawPixelChar('char-' + i, scheme), 2000 + i * 300);
+});
+
+// ===== NFT PIXEL ART =====
+function drawNFT(canvasId, palette) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Dark bg with subtle gradient
+  const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W);
+  grad.addColorStop(0, palette.bg2);
+  grad.addColorStop(1, '#000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  const {primary, secondary, highlight} = palette;
+
+  // Grid background pattern
+  ctx.fillStyle = primary + '11';
+  for(let x=0;x<W;x+=4) {
+    ctx.fillRect(x,0,1,H);
+    ctx.fillRect(0,x,W,1);
+  }
+
+  // Character pixels (simplified 32x32)
+  const art = palette.art;
+  art.forEach(([x,y,c]) => {
+    ctx.fillStyle = c;
+    if(c === highlight) {
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = c;
+    }
+    ctx.fillRect(x,y,2,2);
+    ctx.shadowBlur = 0;
+  });
+
+  // Scanline on NFT
+  ctx.fillStyle = 'rgba(0,0,0,0.15)';
+  for(let y=0;y<H;y+=3) ctx.fillRect(0,y,W,1);
+
+  // Random glitch strip
+  if(Math.random()>0.7) {
+    ctx.fillStyle = primary + '66';
+    ctx.fillRect(0, Math.floor(Math.random()*H), W, 1);
+  }
+}
+
+const nftPalettes = [
+  {
+    bg2:'#1a000a', primary:'#ff0033', secondary:'#8b0000', highlight:'#ff0033',
+    art: [
+      [12,6,'#555'],[14,6,'#555'],[16,6,'#555'],[18,6,'#555'],
+      [10,8,'#555'],[12,8,'#ccc'],[14,8,'#ccc'],[16,8,'#ccc'],[18,8,'#ccc'],[20,8,'#555'],
+      [10,10,'#555'],[12,10,'#ff0033'],[14,10,'#888'],[16,10,'#888'],[18,10,'#ff0033'],[20,10,'#555'],
+      [10,12,'#555'],[12,12,'#888'],[14,12,'#ff0033'],[16,12,'#ff0033'],[18,12,'#888'],[20,12,'#555'],
+      [12,14,'#555'],[14,14,'#888'],[16,14,'#888'],[18,14,'#555'],
+      [12,16,'#333'],[14,16,'#333'],[16,16,'#333'],[18,16,'#333'],
+      [12,18,'#ff0033'],[14,18,'#333'],[16,18,'#333'],[18,18,'#ff0033'],
+      [10,20,'#ff0033'],[12,20,'#333'],[14,20,'#333'],[16,20,'#333'],[18,20,'#333'],[20,20,'#ff0033'],
+    ]
+  },
+  {
+    bg2:'#000a1a', primary:'#00d4ff', secondary:'#003d5c', highlight:'#00d4ff',
+    art: [
+      [12,4,'#00d4ff'],[14,4,'#00d4ff'],[16,4,'#00d4ff'],[18,4,'#00d4ff'],
+      [10,6,'#555'],[12,6,'#aaa'],[14,6,'#aaa'],[16,6,'#aaa'],[18,6,'#aaa'],[20,6,'#555'],
+      [10,8,'#555'],[12,8,'#00d4ff'],[14,8,'#777'],[16,8,'#777'],[18,8,'#00d4ff'],[20,8,'#555'],
+      [10,10,'#555'],[12,10,'#777'],[14,10,'#aaa'],[16,10,'#aaa'],[18,10,'#777'],[20,10,'#555'],
+      [12,12,'#444'],[14,12,'#888'],[16,12,'#888'],[18,12,'#444'],
+      [12,14,'#222'],[14,14,'#00d4ff'],[16,14,'#00d4ff'],[18,14,'#222'],
+      [12,16,'#333'],[14,16,'#444'],[16,16,'#444'],[18,16,'#333'],
+      [10,18,'#00d4ff'],[12,18,'#555'],[14,18,'#555'],[16,18,'#555'],[18,18,'#555'],[20,18,'#00d4ff'],
+    ]
+  },
+  {
+    bg2:'#001100', primary:'#00ff41', secondary:'#003300', highlight:'#00ff41',
+    art: [
+      [12,6,'#777'],[14,6,'#777'],[16,6,'#777'],[18,6,'#777'],
+      [10,8,'#444'],[12,8,'#999'],[14,8,'#999'],[16,8,'#999'],[18,8,'#999'],[20,8,'#444'],
+      [10,10,'#444'],[12,10,'#00ff41'],[14,10,'#666'],[16,10,'#666'],[18,10,'#00ff41'],[20,10,'#444'],
+      [10,12,'#444'],[12,12,'#666'],[14,12,'#999'],[16,12,'#999'],[18,12,'#666'],[20,12,'#444'],
+      [12,14,'#444'],[14,14,'#333'],[16,14,'#333'],[18,14,'#444'],
+      [12,16,'#333'],[14,16,'#555'],[16,16,'#555'],[18,16,'#333'],
+      [12,18,'#00ff41'],[14,18,'#444'],[16,18,'#444'],[18,18,'#00ff41'],
+      [10,20,'#555'],[12,20,'#444'],[14,20,'#444'],[16,20,'#444'],[18,20,'#444'],[20,20,'#555'],
+    ]
+  },
+  {
+    bg2:'#0a0a00', primary:'#ffb000', secondary:'#3d2d00', highlight:'#ffb000',
+    art: [
+      [12,4,'#ffb000'],[14,4,'#ffb000'],[16,4,'#ffb000'],[18,4,'#ffb000'],
+      [10,6,'#444'],[12,6,'#888'],[14,6,'#888'],[16,6,'#888'],[18,6,'#888'],[20,6,'#444'],
+      [10,8,'#444'],[12,8,'#ffb000'],[14,8,'#666'],[16,8,'#666'],[18,8,'#ffb000'],[20,8,'#444'],
+      [10,10,'#444'],[12,10,'#666'],[14,10,'#888'],[16,10,'#888'],[18,10,'#666'],[20,10,'#444'],
+      [12,12,'#333'],[14,12,'#ffb000'],[16,12,'#ffb000'],[18,12,'#333'],
+      [12,14,'#444'],[14,14,'#555'],[16,14,'#555'],[18,14,'#444'],
+      [12,16,'#ffb000'],[14,16,'#333'],[16,16,'#333'],[18,16,'#ffb000'],
+      [10,18,'#444'],[12,18,'#555'],[14,18,'#444'],[16,18,'#444'],[18,18,'#555'],[20,18,'#444'],
+    ]
+  },
+];
+
+nftPalettes.forEach((p, i) => {
+  drawNFT('nft-' + i, p);
+  setInterval(() => drawNFT('nft-' + i, p), 3000 + i * 500);
+});
+
+// ===== FORM SUBMIT =====
+function handleSubmit(btn) {
+  const orig = btn.textContent;
+  btn.textContent = 'PROCESSING...';
+  btn.style.color = 'var(--electric-blue)';
+  btn.style.borderColor = 'var(--electric-blue)';
+
+  let dots = 0;
+  const interval = setInterval(() => {
+    dots = (dots + 1) % 4;
+    btn.textContent = 'UPLOADING TO THE GRID' + '.'.repeat(dots);
+  }, 300);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    btn.textContent = '✓ IDENTITY HASHED — WELCOME TO THE DEAD ZONE';
+    btn.style.background = 'var(--neon-red)';
+    btn.style.color = 'var(--black)';
+    btn.style.borderColor = 'var(--neon-red)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 3000);
+  }, 2500);
+}
+
+// ===== COUNTERS ANIMATION =====
+function animateCounter(el, target, suffix='') {
+  let current = 0;
+  const step = target / 60;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.floor(current).toLocaleString() + suffix;
+    if(current >= target) clearInterval(timer);
+  }, 30);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      animateCounter(document.getElementById('cnt-holders'), 8291);
+      animateCounter(document.getElementById('cnt-apps'), 47291);
+      animateCounter(document.getElementById('cnt-supply'), 5404);
+      observer.disconnect();
+    }
+  });
+}, {threshold: 0.3});
+
+const communitySection = document.getElementById('community');
+if(communitySection) observer.observe(communitySection);
+
+// ===== RANDOM GLITCH FLASH =====
+setInterval(() => {
+  if(Math.random() > 0.85) {
+    document.body.style.filter = 'hue-rotate(' + (Math.random()*20-10) + 'deg) brightness(1.05)';
+    setTimeout(() => document.body.style.filter = '', 60);
+  }
+}, 3000);
+
+// ===== NAV ACTIVE STATE =====
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--electric-blue)' : '';
+  });
+});
+</script>
+</body>
+</html>
